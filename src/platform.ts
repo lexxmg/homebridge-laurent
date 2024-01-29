@@ -2,6 +2,9 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { LaurentPlatformAccessory } from './platformAccessory';
+import { Laurent } from './LaurentClass.mjs';
+
+const laurent = new Laurent('http://192.168.0.101');
 
 /**
  * HomebridgePlatform
@@ -87,7 +90,7 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
-        new LaurentPlatformAccessory(this, existingAccessory);
+        new LaurentPlatformAccessory(this, existingAccessory, laurent);
 
         // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
         // remove platform accessories when no longer present
@@ -106,7 +109,7 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the newly create accessory
         // this is imported from `platformAccessory.ts`
-        new LaurentPlatformAccessory(this, accessory);
+        new LaurentPlatformAccessory(this, accessory, laurent);
 
         // link the accessory to your platform
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);

@@ -22,7 +22,9 @@ export class LaurentPlatformAccessory {
   constructor(
     private readonly platform: LaurentHomebridgePlatform,
     private readonly accessory: PlatformAccessory,
+    private readonly laurent: any
   ) {
+    this.laurent = laurent;
 
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -98,6 +100,8 @@ export class LaurentPlatformAccessory {
   async setOn(value: CharacteristicValue) {
     // implement your own code to turn your device on/off
     this.exampleStates.On = value as boolean;
+    //this.exampleStates.On = await laurent.setOUT(9, value);
+    this.laurent.setOUT(9, value);
 
     this.platform.log.debug('Set Characteristic On ->', value);
   }

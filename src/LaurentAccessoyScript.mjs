@@ -8,17 +8,26 @@ async function evening() {
   await laurent.setOut(4, true);
 }
 
-async function morning() {
+async function morning(dilay) {
   await laurent.setOut(4, false);
-  await laurent.sleep(500);
+  await laurent.sleep(dilay);
   await laurent.setOut(11, 'onOff');
-  await laurent.sleep(500);
+  await laurent.sleep(dilay);
   await laurent.setOut(6, false);
-  await laurent.sleep(500);
+  await laurent.sleep(dilay);
   await laurent.setOut(9, false);
-  await laurent.sleep(500);
+  await laurent.sleep(dilay);
   await laurent.setOut(7, false);
 }
 
-evening();
-//morning();
+async function relax(dilay) {
+  await laurent.setOut(4, false);
+  await laurent.sleep(dilay);
+  await laurent.setOut(7, true);
+  await laurent.sleep(dilay);
+  await laurent.setOut(9, true);
+}
+
+//evening();
+//morning(100);
+relax(100);
