@@ -1,10 +1,10 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
+import { PLATFORM_NAME, PLUGIN_NAME, URL_LAURENT } from './settings';
 import { LaurentPlatformAccessory } from './platformAccessory';
 import { Laurent } from './LaurentClass';
 
-const laurent = new Laurent('http://192.168.0.101');
+const laurent = new Laurent(URL_LAURENT);
 
 /**
  * HomebridgePlatform

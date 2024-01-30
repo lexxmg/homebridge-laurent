@@ -337,28 +337,28 @@ export class Laurent {
 
 
 
-const laurent = new Laurent();
+//const laurent = new Laurent();
 
-laurent.getStatus().then(res => console.log( res));
+//laurent.getStatus().then(res => console.log( res));
 //laurent.getStatus().then(res => console.log(JSON.parse(res).releTable));
 //laurent.getOut(9).then(res => console.log(res));
-laurent.setOut(8, false).then(res => console.log('OUT-8 ' + res));
+//laurent.setOut(8, false).then(res => console.log('OUT-8 ' + res));
 // laurent.setOut(12, 'onOff').then(res => console.log('OUT-12 ' + res));
-laurent.setOut(9, 'toggle').then(res => console.log('OUT-9 ' + res));
+//laurent.setOut(9, 'toggle').then(res => console.log('OUT-9 ' + res));
 
-laurent.setPwm(34).then(res => console.log('PWM ' + res));
+//laurent.setPwm(34).then(res => console.log('PWM ' + res));
 
 //laurent.getRelle(2).then(res => console.log('REL-2 ' + res));
 // laurent.setRelle(2, false).then(res => console.log('REL-2 ' + res));
 //laurent.setRelle(3, 'onOff').then(res => console.log('REL-3 ' + res));
-laurent.setRelle(4, 'toggle').then(res => console.log('REL-4 ' + res));
+//laurent.setRelle(4, 'toggle').then(res => console.log('REL-4 ' + res));
 
 //laurent.getIn(2).then(res => console.log(res));
 //laurent.getTemer().then(res => console.log(res));
 
-laurent.getPWM().then(res => console.log('get pvm ' + res));
+//laurent.getPWM().then(res => console.log('get pvm ' + res));
 
-laurent.getABC(1).then(res => console.log(res));
+//laurent.getABC(1).then(res => console.log(res));
 //laurent.getABC(2).then(res => console.log(res));
 
 // laurent.getCounter(1).then(res => console.log(res));
@@ -371,4 +371,4 @@ laurent.getABC(1).then(res => console.log(res));
 //setInterval( () =>  console.log( laurent.getDelayedStatus(5000) ), 100 );
 //setTimeout( () =>  console.log( laurent.getDelayedStatus() ), 1000 );
 //setTimeout( () => console.log( laurent.status), 1000 );
-console.log(laurent.status);
+//console.log(laurent.status);

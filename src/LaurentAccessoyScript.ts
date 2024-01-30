@@ -1,4 +1,4 @@
-import { Laurent } from "./LaurentClass.mjs";
+import { Laurent } from './LaurentClass';
 
 const laurent = new Laurent('http://192.168.0.101');
 
@@ -8,7 +8,7 @@ async function evening() {
   await laurent.setOut(4, true);
 }
 
-async function morning(dilay) {
+async function morning(dilay: number) {
   await laurent.setOut(4, false);
   await laurent.sleep(dilay);
   await laurent.setOut(11, 'onOff');
@@ -20,7 +20,7 @@ async function morning(dilay) {
   await laurent.setOut(7, false);
 }
 
-async function relax(dilay) {
+async function relax(dilay: number) {
   await laurent.setOut(4, false);
   await laurent.sleep(dilay);
   await laurent.setOut(7, true);
@@ -28,6 +28,6 @@ async function relax(dilay) {
   await laurent.setOut(9, true);
 }
 
-//evening();
+evening();
 //morning(100);
-relax(100);
+//relax(100);
