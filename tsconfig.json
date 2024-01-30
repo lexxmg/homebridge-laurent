@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES2018", // ~node10
-    "module": "commonjs",
+    "target": "es2018", // ~node10
+    "module": "NodeNext",
     "lib": [
+      "ES6",
       "es2015",
       "es2016",
       "es2017",
-      "es2018"
+      "es2018",
+      "es2020"
     ],
     "declaration": true,
     "declarationMap": true,
@@ -15,7 +17,8 @@
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
   },
   "include": [
     "src/"

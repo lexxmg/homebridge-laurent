@@ -322,12 +322,12 @@ export class Laurent {
 
 
 
-//const laurent = new Laurent();
+const laurent = new Laurent();
 
 //laurent.getStatus().then(res => console.log( res));
 //laurent.getStatus().then(res => console.log(JSON.parse(res).releTable));
 //laurent.getOut(9).then(res => console.log(res));
-// laurent.setOut(8, false).then(res => console.log('OUT-8 ' + res));
+laurent.setOut(7, false).then(res => console.log('OUT-8 ' + res));
 // laurent.setOut(12, 'onOff').then(res => console.log('OUT-12 ' + res));
 //laurent.setOut(9, 'toggle').then(res => console.log('OUT-9 ' + res));
 

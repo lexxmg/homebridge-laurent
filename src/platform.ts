@@ -2,7 +2,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { LaurentPlatformAccessory } from './platformAccessory';
-import { Laurent } from './LaurentClass.mjs';
+import { Laurent } from './LaurentClass';
 
 const laurent = new Laurent('http://192.168.0.101');
 
