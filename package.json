@@ -10,7 +10,7 @@
     "url": "https://github.com/lexxmg/laurent-larevel"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/lexxmg/laurent-larevel/issues"
   },
   "engines": {
     "node": "^18.17.0 || ^20.9.0",
