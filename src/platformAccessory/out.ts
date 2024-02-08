@@ -1,13 +1,13 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
-import { LaurentHomebridgePlatform } from './platform';
+import { LaurentHomebridgePlatform } from '../platform';
 
 /**
  * Platform Accessory
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class LaurentPlatformAccessory {
+export class LightBulb {
   private service: Service;
 
   /**
@@ -18,13 +18,16 @@ export class LaurentPlatformAccessory {
     On: false,
     Brightness: 100,
   };
-
+  
   constructor(
     private readonly platform: LaurentHomebridgePlatform,
     private readonly accessory: PlatformAccessory,
-    private readonly laurent: any
+    private readonly laurent: any,
+    private readonly out: number
   ) {
     this.laurent = laurent;
+    this.out = out;
+    this.exampleStates.On = +this.laurent.status.outTable[this.out - 1] ? true : false;
 
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -49,8 +52,8 @@ export class LaurentPlatformAccessory {
       .onGet(this.getOn.bind(this));               // GET - bind to the `getOn` method below
 
     // register handlers for the Brightness Characteristic
-    this.service.getCharacteristic(this.platform.Characteristic.Brightness)
-      .onSet(this.setBrightness.bind(this));       // SET - bind to the 'setBrightness` method below
+    // this.service.getCharacteristic(this.platform.Characteristic.Brightness)
+    //   .onSet(this.setBrightness.bind(this));       // SET - bind to the 'setBrightness` method below
 
     /**
      * Creating multiple services of the same type.
@@ -88,8 +91,8 @@ export class LaurentPlatformAccessory {
       motionSensorOneService.updateCharacteristic(this.platform.Characteristic.MotionDetected, motionDetected);
       motionSensorTwoService.updateCharacteristic(this.platform.Characteristic.MotionDetected, !motionDetected);
 
-      this.platform.log.debug('Triggering motionSensorOneService:', motionDetected);
-      this.platform.log.debug('Triggering motionSensorTwoService:', !motionDetected);
+      // this.platform.log.debug('Triggering motionSensorOneService:', motionDetected);
+      // this.platform.log.debug('Triggering motionSensorTwoService:', !motionDetected);
     }, 10000);
   }
 
@@ -97,11 +100,11 @@ export class LaurentPlatformAccessory {
    * Handle "SET" requests from HomeKit
    * These are sent when the user changes the state of an accessory, for example, turning on a Light bulb.
    */
-  async setOn(value: CharacteristicValue) {
+  setOn(value: CharacteristicValue) {
     // implement your own code to turn your device on/off
     this.exampleStates.On = value as boolean;
-    //this.exampleStates.On = await laurent.setOUT(9, value);
-    this.laurent.setOUT(9, value);
+    //this.exampleStates.On = await this.laurent.setOut(this.out, value);
+    this.laurent.setOut(this.out, value);
 
     this.platform.log.debug('Set Characteristic On ->', value);
   }
@@ -121,9 +124,10 @@ export class LaurentPlatformAccessory {
    */
   async getOn(): Promise<CharacteristicValue> {
     // implement your own code to check if the device is on
-    const isOn = this.exampleStates.On;
+    const res = await this.laurent.getDelayedStatus(1000);
+    const isOn = +res.outTable[this.out - 1] ? true : false;
 
-    this.platform.log.debug('Get Characteristic On ->', isOn);
+    this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);

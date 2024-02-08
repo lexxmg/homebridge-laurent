@@ -1,7 +1,7 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME, URL_LAURENT } from './settings';
-import { LaurentPlatformAccessory } from './platformAccessory';
+import { LightBulb } from './platformAccessory/out';
 import { Laurent } from './LaurentClass';
 
 const laurent = new Laurent(URL_LAURENT);
@@ -60,12 +60,22 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
     const exampleDevices = [
       {
         exampleUniqueId: 'ABCD',
-        exampleDisplayName: 'Bedroom',
+        exampleDisplayName: 'Цветы out-9',
+        out: 9,
+        accessories: LightBulb
       },
       {
-        exampleUniqueId: 'EFGH',
-        exampleDisplayName: 'Kitchen',
+        exampleUniqueId: 'ABCB',
+        exampleDisplayName: 'Свет с права',
+        out: 4,
+        accessories: LightBulb
       },
+      {
+        exampleUniqueId: 'ABHJ',
+        exampleDisplayName: 'Свет с лева',
+        out: 7,
+        accessories: LightBulb
+      }
     ];
 
     // loop over the discovered devices and register each one if it has not already been registered
@@ -90,7 +100,7 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
-        new LaurentPlatformAccessory(this, existingAccessory, laurent);
+        new device.accessories(this, existingAccessory, laurent, device.out);
 
         // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
         // remove platform accessories when no longer present
@@ -109,7 +119,7 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the newly create accessory
         // this is imported from `platformAccessory.ts`
-        new LaurentPlatformAccessory(this, accessory, laurent);
+        new device.accessories(this, accessory, laurent, device.out);
 
         // link the accessory to your platform
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
