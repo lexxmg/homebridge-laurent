@@ -272,19 +272,19 @@ export class Laurent {
    * @param {*} delay
    * @returns object 
    */
-  getDelayedStatus(delay: number = 0) {
+  async getDelayedStatus(delay: number = 0) {
     const newDate = new Date().getTime();
     const oldDate = this.status.sistemTime + delay;
 
     if (oldDate < newDate) {
-        this.getStatus().then(res => {
-        const status = JSON.parse(res);
-        status.sistemTime = newDate;
-        this.status = status;
-      });
+      const res = await this.getStatus();
+      const status = JSON.parse(res);
+      status.sistemTime = newDate;
+      this.status = status;
+      return status;
+    } else {
+      return this.status;
     }
-    
-    return this.status;
   }
 
   /**
