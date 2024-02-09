@@ -1,13 +1,18 @@
 <p align="center">
-
-<img src="https://github.com/homebridge/branding/raw/latest/logos/homebridge-wordmark-logo-vertical.png" width="150">
-
+config.json
 </p>
 
 <span align="center">
 
-# Homebridge Platform Plugin Template
-
+"accessories": [
+    {
+        "UniqueId": "ABCD",
+        "DisplayName": "Цветы out-9",
+        "out": 9,
+        "mode": "switch",
+        "type": "LightBulb"
+    }
+]
 </span>
 
 This is a template Homebridge dynamic platform plugin and can be used as a base to help you get started developing your own plugin.

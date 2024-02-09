@@ -6,10 +6,10 @@
     "type": "object",
     "properties": {
       "name": {
-        "title": "LaurentHomebridgePlugin",
+        "title": "name",
         "type": "string",
         "required": true,
-        "default": "homebridge-laurent"
+        "default": "Laurent"
       }
     }
   }
