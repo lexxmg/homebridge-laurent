@@ -25,7 +25,6 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
     public readonly api: API,
   ) {
     this.log.debug('Finished initializing platform:', this.config.name);
-    this.log.info('Конфигурация:', this.config.accessories);
 
     this.api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
@@ -46,28 +45,7 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
 
  
   discoverDevices(accessories: any) {
-    let devices = [
-      {
-        DniqueId: 'ABCD',
-        DisplayName: 'Цветы',
-        out: 9,
-        mode: 'switch',
-        type: 'LightBulb'
-      },
-      {
-        UniqueId: 'ABJB',
-        DisplayName: 'out-10',
-        out: 10,
-        mode: 'switch',
-        type: 'Window'
-      }
-    ];
-
-    if (accessories) {
-      devices = accessories; // config.json
-    }
-    
-    for (const device of devices) {
+    for (const device of accessories) {
       if (device.type === 'LightBulb') {
         this.cteateAccessory(device, LightBulb);
       }
@@ -79,21 +57,21 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
   }
 
   cteateAccessory(device: any, obg: any) {
-    const uuid = this.api.hap.uuid.generate(device.UniqueId);
+    const uuid = this.api.hap.uuid.generate(device.uniqueId);
     const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
 
     if (existingAccessory) {
       this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
 
-      new obg(this, existingAccessory, laurent, device.out);
+      new obg(this, existingAccessory, laurent, device);
     } else {
       this.log.info('Adding new accessory:', device.DisplayName);
 
-      const accessory = new this.api.platformAccessory(device.DisplayName, uuid);
+      const accessory = new this.api.platformAccessory(device.displayName, uuid);
 
       accessory.context.device = device;
 
-      new obg(this, accessory, laurent, device.out);
+      new obg(this, accessory, laurent, device);
 
       this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
     }

@@ -6,10 +6,58 @@
     "type": "object",
     "properties": {
       "name": {
-        "title": "name",
+        "title": "Контроллер",
         "type": "string",
         "required": true,
         "default": "Laurent"
+      },
+      "accessories": {
+        "title": "Устройство",
+        "type": "array",
+        "items": [
+          {
+            "type": "object",
+            "properties": {
+              "uniqueId": {
+                "title": "Уникальный идентификатор",
+                "type": "string",
+                "default": "HFDJ"
+              },
+              "displayName": {
+                "title": "Имя кнопки",
+                "type": "string",
+                "default": "OUT-9"
+              },
+              "out": {
+                "title": "Номер выхода 1-12",
+                "type": "integer",
+                "default": 9
+              },
+              "mode": {
+                "title": "Режим работы 'true', 'onOff', 'toggle'",
+                "type": "string",
+                "examples": [
+                  "true",
+                  "onOff",
+                  "toggle"
+                ],
+                "default": "true"
+              },
+              "type": {
+                "title": "Вид устройства 'LightBulb', 'Window'",
+                "type": "string",
+                "default": "LightBulb"
+              }
+            },
+            "required": [
+              "uniqueId",
+              "displayName",
+              "out",
+              "mode",
+              "type"
+            ]
+          }
+        ]
       }
     }
   }

@@ -6,14 +6,17 @@ config.json
 
 "accessories": [
     {
-        "UniqueId": "ABCD",
-        "DisplayName": "Цветы out-9",
+        "uniqueId": "ABCD",
+        "displayName": "Цветы out-9",
         "out": 9,
-        "mode": "switch",
+        "mode": "true",
         "type": "LightBulb"
     }
 ]
 </span>
+
+Значение "mode" может быть: "true", "onOff", "tiggle"
+Значение "out" может быть: числом от 1 до 12
 
 This is a template Homebridge dynamic platform plugin and can be used as a base to help you get started developing your own plugin.
 
