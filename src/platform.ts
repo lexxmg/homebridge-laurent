@@ -1,7 +1,7 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME, URL_LAURENT } from './settings';
-import { LightBulb } from './platformAccessory/out';
+import { LightBulb } from './platformAccessory/LightBulb';
 import { Window } from './platformAccessory/window';
 import { Laurent } from './LaurentClass';
 

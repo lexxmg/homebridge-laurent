@@ -8,7 +8,7 @@ export class Window {
 
   private exampleStates = {
     On: false,
-    Brightness: 100,
+    Brightness: 50,
   };
   
   constructor(
@@ -34,28 +34,69 @@ export class Window {
     // each service must implement at-minimum the "required characteristics" for the given service type
     // see https://developers.homebridge.io/#/service/Lightbulb
 
-    //create handlers for required characteristics
-  // this.service.getCharacteristic(this.platform.Characteristic.CurrentPosition)
-  //   .onGet(this.handleCurrentPositionGet.bind(this));
+    // create handlers for required characteristics
+  this.service.getCharacteristic(this.platform.Characteristic.CurrentPosition)
+    .onGet(this.handleCurrentPositionGet.bind(this));
 
-  this.service.getCharacteristic(this.platform.Characteristic.PositionState)
-    .onGet(this.handlePositionStateGet.bind(this))
-    .onSet(this.handlePositionStateSet.bind(this));  
+  // this.service.getCharacteristic(this.platform.Characteristic.PositionState)
+  //   .onGet(this.handlePositionStateGet.bind(this));
 
-  // this.service.getCharacteristic(this.platform.Characteristic.TargetPosition)
-  //   .onGet(this.handleTargetPositionGet.bind(this))
-  //   .onSet(this.handleTargetPositionSet.bind(this));  
+  this.service.getCharacteristic(this.platform.Characteristic.TargetPosition)
+    .onGet(this.handleTargetPositionGet.bind(this))
+    .onSet(this.handleTargetPositionSet.bind(this));  
+  }
+/**
+   * Handle requests to get the current value of the "Current Position" characteristic
+   */
+  handleCurrentPositionGet() {
+    this.platform.log.debug('Triggered GET CurrentPosition');
+
+    // set this to a valid value for CurrentPosition
+    const currentValue = this.exampleStates.Brightness;
+
+    return currentValue;
   }
 
 
   /**
    * Handle requests to get the current value of the "Position State" characteristic
    */
-  handlePositionStateGet() {
-    this.platform.log.debug('Triggered GET PositionState');
+//   handlePositionStateGet() {
+//     if (this.exampleStates.Brightness > 40 && this.exampleStates.Brightness < 60) {
+//       this.platform.log.debug('Triggered SET TargetPosition:', this.exampleStates.Brightness);
+//       this.platform.log.debug('Triggered SET TargetPosition:', 'stop');
+//       this.exampleStates.Brightness = this.platform.Characteristic.PositionState.STOPPED;
+// 
+//       return this.exampleStates.Brightness;
+//     }
+// 
+//     if (this.exampleStates.Brightness > 70) {
+//       this.platform.log.debug('Triggered SET TargetPosition:', this.exampleStates.Brightness);
+//       this.platform.log.debug('Triggered SET TargetPosition:', 'open');
+//       this.exampleStates.Brightness = this.platform.Characteristic.PositionState.INCREASING;
+//     
+//       return this.exampleStates.Brightness;
+//     }
+// 
+//     if (this.exampleStates.Brightness < 30) {
+//       this.platform.log.debug('Triggered SET TargetPosition:', this.exampleStates.Brightness);
+//       this.platform.log.debug('Triggered SET TargetPosition:', 'close');
+//       this.exampleStates.Brightness = this.platform.Characteristic.PositionState.DECREASING;
+//    
+//       return this.exampleStates.Brightness;
+//     }
+//     
+//   }
 
-    // set this to a valid value for PositionState
-    const currentValue = this.platform.Characteristic.PositionState.DECREASING;
+
+  /**
+   * Handle requests to get the current value of the "Target Position" characteristic
+   */
+  handleTargetPositionGet() {
+    this.platform.log.debug('Triggered GET TargetPosition');
+
+    // set this to a valid value for TargetPosition
+    const currentValue = this.exampleStates.Brightness;
 
     return currentValue;
   }
@@ -63,8 +104,24 @@ export class Window {
   /**
    * Handle requests to set the "Target Position" characteristic
    */
-  handlePositionStateSet(value: any) {
-    this.platform.log.debug('Triggered SET TargetPosition:', value);
+  handleTargetPositionSet(value: any) {
+    if (value > 40 && value < 60) {
+      this.platform.log.debug('Triggered SET TargetPosition:', value);
+      this.platform.log.debug('Triggered SET TargetPosition:', 'stop');
+      this.exampleStates.Brightness = 50;
+    }
+
+    if (value > 70) {
+      this.platform.log.debug('Triggered SET TargetPosition:', value);
+      this.platform.log.debug('Triggered SET TargetPosition:', 'open');
+      this.exampleStates.Brightness = 100;
+    }
+
+    if (value < 30) {
+      this.platform.log.debug('Triggered SET TargetPosition:', value);
+      this.platform.log.debug('Triggered SET TargetPosition:', 'close');
+      this.exampleStates.Brightness = 0;
+    }
   }
 
 }

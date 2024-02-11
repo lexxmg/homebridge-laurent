@@ -28,10 +28,20 @@
                 "type": "string",
                 "default": "OUT-9"
               },
+              "outType": {
+                "title": "Тип выхода 'out' (OUT), 'rel' (Relle)",
+                "type": "string",
+                "default": "out"
+              },
               "out": {
-                "title": "Номер выхода 1-12",
+                "title": "Номер выхода (out 1-12) (rel 1-4)",
                 "type": "integer",
                 "default": 9
+              },
+              "outInv": {
+                "title": "Инвентировать состояние выхода true, false",
+                "type": "boolean",
+                "default": false
               },
               "mode": {
                 "title": "Режим работы 'true', 'onOff', 'toggle'",
