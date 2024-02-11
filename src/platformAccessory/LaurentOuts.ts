@@ -7,12 +7,13 @@ import { LaurentHomebridgePlatform } from '../platform';
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class LightBulb {
+export class LaurentOuts {
   private service: Service;
   private out: number;
   private mode: any;
   private outType: string;
   private outInv: boolean;
+  private type: any;
 
   /**
    * These are just used to create a working example
@@ -33,22 +34,10 @@ export class LightBulb {
     this.mode = this.props.mode;
     this.outType = this.props.outType;
     this.outInv = this.props.outInv;
+    this.type = this.props.accessory;
 
-    if (this.outType === 'out') {
-      if (this.outInv) {
-        this.exampleStates.On = +this.laurent.status.outTable[this.out - 1] ? false : true;
-      } else {
-        this.exampleStates.On = +this.laurent.status.outTable[this.out - 1] ? true : false;
-      }
-    }
-
-    if (this.outType === 'rel') {
-      if (this.outInv) {
-        this.exampleStates.On = +this.laurent.status.releTable[this.out - 1] ? false : true;
-      } else {
-        this.exampleStates.On = +this.laurent.status.releTable[this.out - 1] ? true : false;
-      }
-    }
+    this.platform.log.debug('Запуск коструктора -> ', this.exampleStates.On);
+    this.platform.log.debug('Запуск коструктора accsissories -> ', this.type);
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -57,8 +46,8 @@ export class LightBulb {
 
     // get the LightBulb service if it exists, otherwise create a new LightBulb service
     // you can create multiple services for each accessory
-    this.service = this.accessory.getService(this.platform.Service.Lightbulb) || this.accessory.addService(this.platform.Service.Lightbulb);
-
+    this.service = this.accessory.getService(this.platform.Service[this.type])
+    || this.accessory.addService(this.platform.Service[this.type]);
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
     this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.displayName);
@@ -78,7 +67,6 @@ export class LightBulb {
    */
   setOn(value: CharacteristicValue) {
     // implement your own code to turn your device on/off
-    this.platform.log.debug('Значение value на входе  ->', value);
     if (this.outInv) {
       value = !value;
     }
@@ -87,27 +75,39 @@ export class LightBulb {
     
     if (this.outType === 'out') {
       if (this.mode === 'true') {
-        this.laurent.setOut(this.out, value);
+        this.laurent.setOut(this.out, value).then((res: any) => {
+          this.exampleStates.On = res as boolean;
+          this.service.updateCharacteristic(this.platform.Characteristic.On, res);
+        });
       } else if (this.mode === 'onOff') {
-        this.laurent.setOut(this.out, 'onOff');
-        setTimeout(() => {
-          this.service.updateCharacteristic(this.platform.Characteristic.On, false);
-        }, 1000);
+        this.laurent.setOut(this.out, 'onOff').then((res: any) => {
+          this.exampleStates.On = res as boolean;
+          this.service.updateCharacteristic(this.platform.Characteristic.On, res);
+        });
       } else if (this.mode === 'toggle') {
-        this.laurent.setOut(this.out, 'toggle');
+        this.laurent.setOut(this.out, 'toggle').then((res: any) => {
+          this.exampleStates.On = res as boolean;
+          this.service.updateCharacteristic(this.platform.Characteristic.On, res);
+        });
       }
     }
 
     if (this.outType === 'rel') {
       if (this.mode === 'true') {
-        this.laurent.setRelle(this.out, value);
+        this.laurent.setRelle(this.out, value).then((res: any) => {
+          this.exampleStates.On = res as boolean;
+          this.service.updateCharacteristic(this.platform.Characteristic.On, res);
+        });
       } else if (this.mode === 'onOff') {
-        this.laurent.setRelle(this.out, 'onOff');
-        setTimeout(() => {
-          this.service.updateCharacteristic(this.platform.Characteristic.On, false);
-        }, 1000);
+        this.laurent.setRelle(this.out, 'onOff').then((res: any) => {
+          this.exampleStates.On = res as boolean;
+          this.service.updateCharacteristic(this.platform.Characteristic.On, res);
+        });
       } else if (this.mode === 'toggle') {
-        this.laurent.setRelle(this.out, 'toggle');
+        this.laurent.setRelle(this.out, 'toggle').then((res: any) => {
+          this.exampleStates.On = res as boolean;
+          this.service.updateCharacteristic(this.platform.Characteristic.On, res);
+        });
       }
     }
     
@@ -131,6 +131,7 @@ export class LightBulb {
   async getOn(): Promise<CharacteristicValue> {
     if (this.outType === 'out') {
       if (this.props.mode === 'onOff') {
+        //return this.exampleStates.On;
         await this.laurent.sleep(1500);
         const res = await this.laurent.getDelayedStatus(1000);
         
@@ -144,7 +145,7 @@ export class LightBulb {
           return isOn;
         } 
       } else {
-        const res = await this.laurent.getDelayedStatus(1000);
+        const res = await this.laurent.getDelayedStatus(2000);
 
         if (this.outInv) {
           const isOn = +res.outTable[this.out - 1] ? false : true;
@@ -160,6 +161,7 @@ export class LightBulb {
 
     if (this.outType === 'rel') {
       if (this.props.mode === 'onOff') {
+        //return this.exampleStates.On;
         await this.laurent.sleep(1500);
         const res = await this.laurent.getDelayedStatus(1000);
         
@@ -173,7 +175,7 @@ export class LightBulb {
           return isOn;
         } 
       } else {
-        const res = await this.laurent.getDelayedStatus(1000);
+        const res = await this.laurent.getDelayedStatus(2000);
 
         if (this.outInv) {
           const isOn = +res.releTable[this.out - 1] ? false : true;

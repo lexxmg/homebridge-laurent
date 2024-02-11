@@ -53,10 +53,10 @@
                 ],
                 "default": "true"
               },
-              "type": {
-                "title": "Вид устройства 'LightBulb', 'Window'",
+              "accessory": {
+                "title": "Вид устройства 'Lightbulb', 'Outlet', 'Switch'",
                 "type": "string",
-                "default": "LightBulb"
+                "default": "Lightbulb"
               }
             },
             "required": [
@@ -64,7 +64,7 @@
               "displayName",
               "out",
               "mode",
-              "type"
+              "accessory"
             ]
           }
         ]

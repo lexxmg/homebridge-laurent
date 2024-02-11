@@ -26,7 +26,7 @@ export class Laurent {
 /**
  * Устанавливает состояние выхода OUT
  * @param {*} out 
- * @param {boolean || 'onOff' || 'toggle'} options 
+ * @param {boolean | 'onOff' | 'toggle'} options 
  * @returns promise boolean
  * 
  * setOut(8, false).then(res => console.log('OUT-8 ' + res)); включает или выключает

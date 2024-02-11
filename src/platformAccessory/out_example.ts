@@ -7,7 +7,7 @@ import { LaurentHomebridgePlatform } from '../platform';
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class LightBulb {
+export class ExampleLightBulb {
   private service: Service;
   private out: number;
   private mode: any;

@@ -1,9 +1,10 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME, URL_LAURENT } from './settings';
-import { LightBulb } from './platformAccessory/LightBulb';
+
 import { Window } from './platformAccessory/window';
 import { Laurent } from './LaurentClass';
+import { LaurentOuts } from './platformAccessory/LaurentOuts';
 
 const laurent = new Laurent(URL_LAURENT);
 
@@ -46,8 +47,8 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
  
   discoverDevices(accessories: any) {
     for (const device of accessories) {
-      if (device.type === 'LightBulb') {
-        this.cteateAccessory(device, LightBulb);
+      if (device.outType === 'out' || device.outType === 'rel') {
+        this.cteateAccessory(device, LaurentOuts);
       }
 
       if (device.type === 'Window') {
