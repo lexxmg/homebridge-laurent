@@ -145,7 +145,7 @@ export class LaurentOuts {
           return isOn;
         } 
       } else {
-        const res = await this.laurent.getDelayedStatus(2000);
+        const res = await this.laurent.getDelayedStatus(10000);
 
         if (this.outInv) {
           const isOn = +res.outTable[this.out - 1] ? false : true;
@@ -175,7 +175,7 @@ export class LaurentOuts {
           return isOn;
         } 
       } else {
-        const res = await this.laurent.getDelayedStatus(2000);
+        const res = await this.laurent.getDelayedStatus(10000);
 
         if (this.outInv) {
           const isOn = +res.releTable[this.out - 1] ? false : true;
