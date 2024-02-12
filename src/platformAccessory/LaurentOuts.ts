@@ -129,65 +129,39 @@ export class LaurentOuts {
    * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
    */
   async getOn(): Promise<CharacteristicValue> {
-    if (this.outType === 'out') {
-      if (this.props.mode === 'onOff') {
-        //return this.exampleStates.On;
-        await this.laurent.sleep(1500);
-        const res = await this.laurent.getDelayedStatus(1000);
-        
-        if (this.outInv) {
-          const isOn = +res.outTable[this.out - 1] ? false : true;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        } else {
-          const isOn = +res.outTable[this.out - 1] ? true : false;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        } 
-      } else {
-        const res = await this.laurent.getDelayedStatus(10000);
+    await this.laurent.sleep(100);
 
-        if (this.outInv) {
-          const isOn = +res.outTable[this.out - 1] ? false : true;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        } else {
-          const isOn = +res.outTable[this.out - 1] ? true : false;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        }
+    this.platform.log.debug('Счетчик -> ' + this.laurent.counter);
+    //return this.exampleStates.On;
+    const res = await this.laurent.getDelayedStatus();
+    //this.platform.log.debug('Счетчик -> ' + this.laurent.counter);
+
+    if (this.outType === 'out') {
+      if (this.type === 'onOff') await this.laurent.sleep(2000);
+      if (this.outInv) {
+        const isOn = +res.outTable[this.out - 1] ? false : true;
+        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
+        return isOn;
+      } else {
+        const isOn = +res.outTable[this.out - 1] ? true : false;
+        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
+        return isOn;
       }
     }
 
     if (this.outType === 'rel') {
-      if (this.props.mode === 'onOff') {
-        //return this.exampleStates.On;
-        await this.laurent.sleep(1500);
-        const res = await this.laurent.getDelayedStatus(1000);
-        
-        if (this.outInv) {
-          const isOn = +res.releTable[this.out - 1] ? false : true;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        } else {
-          const isOn = +res.releTable[this.out - 1] ? true : false;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        } 
+      if (this.type === 'onOff') await this.laurent.sleep(2000);
+      if (this.outInv) {
+        const isOn = +res.releTable[this.out - 1] ? false : true;
+        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
+        return isOn;
       } else {
-        const res = await this.laurent.getDelayedStatus(10000);
-
-        if (this.outInv) {
-          const isOn = +res.releTable[this.out - 1] ? false : true;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        } else {
-          const isOn = +res.releTable[this.out - 1] ? true : false;
-          this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-          return isOn;
-        }
+        const isOn = +res.releTable[this.out - 1] ? true : false;
+        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
+        return isOn;
       }
     }
-    return false;
+
+    return this.exampleStates.On;
   }
 }

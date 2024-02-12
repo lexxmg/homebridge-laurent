@@ -3,9 +3,13 @@ import got from 'got';
 export class Laurent {
   url: string;
   status: any;
+  counter: number;
+  redy: boolean;
  
   constructor(url = 'http://192.168.0.101') {
     this.url = url;
+    this.counter = 0;
+    this.redy= false;
     this.status = {
       systime: '00000',
       inTable: '000000',
@@ -21,7 +25,7 @@ export class Laurent {
       pwm: '0',
       sistemTime: 0
     }
-    this.getDelayedStatus();
+    //this.getDelayedStatus();
   }
 /**
  * Устанавливает состояние выхода OUT
@@ -50,7 +54,7 @@ export class Laurent {
           }
         }
 
-        this.getDelayedStatus();
+        //this.getDelayedStatus();
         return await this.getOut(out);
       }
 
@@ -63,10 +67,10 @@ export class Laurent {
             await this.sleep(1000);
             response = await got(this.url + '/server.cgi?data=OUT,' + out).text();
 
-            this.getDelayedStatus();
+            //this.getDelayedStatus();
             return await this.getOut(out);
           } else {
-            this.getDelayedStatus();
+            //this.getDelayedStatus();
             return await this.setOut(out, false);
           }
         }
@@ -74,7 +78,7 @@ export class Laurent {
         if (options === 'toggle') {
           response = await got(this.url + '/server.cgi?data=OUT,' + out).text();
 
-          this.getDelayedStatus();
+          //this.getDelayedStatus();
           return await this.getOut(out);
         }
       }
@@ -111,7 +115,7 @@ export class Laurent {
           }
         }
 
-        this.getDelayedStatus();
+        //this.getDelayedStatus();
         return await this.getRelle(rel);
       }
 
@@ -124,10 +128,10 @@ export class Laurent {
             await this.sleep(1000);
             response = await got(this.url + '/server.cgi?data=REL,' + rel).text();
 
-            this.getDelayedStatus();
+            //this.getDelayedStatus();
             return await this.getRelle(rel);
           } else {
-            this.getDelayedStatus();
+            //this.getDelayedStatus();
             return await this.setRelle(rel, false);
           }
         }
@@ -135,7 +139,7 @@ export class Laurent {
         if (options === 'toggle') {
           response = await got(this.url + '/server.cgi?data=REL,' + rel).text();
 
-          this.getDelayedStatus();
+          //this.getDelayedStatus();
           return await this.getRelle(rel);
         }
       }
@@ -155,7 +159,7 @@ export class Laurent {
     try {
       response = await got(this.url + '/server.cgi?data=PWM,' + pwm).text();
 
-      this.getDelayedStatus();
+      //this.getDelayedStatus();
       return await this.getPWM();
     } catch (error) {
       console.log('какая то ошибка ' + error);
@@ -273,18 +277,40 @@ export class Laurent {
    * @returns object 
    */
   async getDelayedStatus(delay: number = 0) {
-    const newDate = new Date().getTime();
-    const oldDate = this.status.sistemTime + delay;
+    try {
+      const newDate = new Date().getTime();
+      const oldDate = this.status.sistemTime;
+      
+      if (this.counter === 0) {
+          this.counter++;
+          const res = await this.getStatus();
+          const status = JSON.parse(res);
+          status.sistemTime = newDate;
+          this.status = status;
+          this.redy = true;
+          this.counterResset(1000);
+          return this.status;
+      }
+      this.counter++;
 
-    if (oldDate < newDate) {
-      const res = await this.getStatus();
-      const status = JSON.parse(res);
-      status.sistemTime = newDate;
-      this.status = status;
-      return status;
-    } else {
-      return this.status;
+      for (let i = 0; i < 200; i++) {
+        if (this.redy) {
+          await this.sleep(50);
+          return this.status;
+        }
+        await this.sleep(50);
+      }
+    } catch (error) {
+        return error;
     }
+  }
+
+  async counterResset (time = 1000) {
+    await this.sleep(time);
+    this.counter = 0;
+    this.redy = false;
+
+    return this.counter;
   }
 
   /**
