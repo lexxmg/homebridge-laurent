@@ -1,6 +1,7 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { LaurentHomebridgePlatform } from '../platform';
+import { config } from 'process';
 
 /**
  * Platform Accessory
@@ -67,7 +68,7 @@ export class LaurentOuts {
    */
   setOn(value: CharacteristicValue) {
     // implement your own code to turn your device on/off
-    if (this.outInv) {
+    if (this.outInv && this.mode !== 'onOff') {
       value = !value;
     }
 
@@ -76,6 +77,7 @@ export class LaurentOuts {
     if (this.outType === 'out') {
       if (this.mode === 'true') {
         this.laurent.setOut(this.out, value).then((res: any) => {
+          res = this.outInv ? !res : res;
           this.exampleStates.On = res as boolean;
           this.service.updateCharacteristic(this.platform.Characteristic.On, res);
         });
@@ -86,6 +88,7 @@ export class LaurentOuts {
         });
       } else if (this.mode === 'toggle') {
         this.laurent.setOut(this.out, 'toggle').then((res: any) => {
+          res = this.outInv ? !res : res;
           this.exampleStates.On = res as boolean;
           this.service.updateCharacteristic(this.platform.Characteristic.On, res);
         });
@@ -95,6 +98,7 @@ export class LaurentOuts {
     if (this.outType === 'rel') {
       if (this.mode === 'true') {
         this.laurent.setRelle(this.out, value).then((res: any) => {
+          res = this.outInv ? !res : res;
           this.exampleStates.On = res as boolean;
           this.service.updateCharacteristic(this.platform.Characteristic.On, res);
         });
@@ -105,6 +109,7 @@ export class LaurentOuts {
         });
       } else if (this.mode === 'toggle') {
         this.laurent.setRelle(this.out, 'toggle').then((res: any) => {
+          res = this.outInv ? !res : res;
           this.exampleStates.On = res as boolean;
           this.service.updateCharacteristic(this.platform.Characteristic.On, res);
         });
@@ -129,39 +134,40 @@ export class LaurentOuts {
    * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
    */
   async getOn(): Promise<CharacteristicValue> {
-    await this.laurent.sleep(100);
-
     this.platform.log.debug('Счетчик -> ' + this.laurent.counter);
-    //return this.exampleStates.On;
-    const res = await this.laurent.getDelayedStatus();
-    //this.platform.log.debug('Счетчик -> ' + this.laurent.counter);
+    if (this.mode === 'onOff') {
+      await this.laurent.sleep(2000);
+      return await this.getStat(this.out, this.outType, false);
+    }
 
-    if (this.outType === 'out') {
-      if (this.type === 'onOff') await this.laurent.sleep(2000);
-      if (this.outInv) {
-        const isOn = +res.outTable[this.out - 1] ? false : true;
-        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-        return isOn;
+    return await this.getStat(this.out, this.outType, this.outInv);
+  }
+
+  async getStat(out = 1, type = 'out', rev = false): Promise<any> {
+    const getOut = async (out: number, rev: boolean) => {
+      const res = await this.laurent.getDelayedStatus();
+      if (rev) {
+        return +res.outTable[out - 1] ? false : true;
       } else {
-        const isOn = +res.outTable[this.out - 1] ? true : false;
-        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-        return isOn;
+        return +res.outTable[out - 1] ? true : false;
       }
     }
 
-    if (this.outType === 'rel') {
-      if (this.type === 'onOff') await this.laurent.sleep(2000);
-      if (this.outInv) {
-        const isOn = +res.releTable[this.out - 1] ? false : true;
-        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-        return isOn;
+    const getRel = async (out: number, rev: boolean) => {
+      const res = await this.laurent.getDelayedStatus();
+      if (rev) {
+        return +res.releTable[out - 1] ? false : true;
       } else {
-        const isOn = +res.releTable[this.out - 1] ? true : false;
-        this.platform.log.debug('Запрос состояния -> ' + this.out + ' ', isOn);
-        return isOn;
+        return +res.releTable[out - 1] ? true : false;
       }
     }
 
-    return this.exampleStates.On;
+    if (type === 'out') {
+      return await getOut(out, rev);
+    }
+
+    if (type === 'rel') {
+      return await getRel(out, rev);
+    }
   }
 }

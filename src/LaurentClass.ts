@@ -4,12 +4,12 @@ export class Laurent {
   url: string;
   status: any;
   counter: number;
-  redy: boolean;
+  ready: boolean;
  
   constructor(url = 'http://192.168.0.101') {
     this.url = url;
     this.counter = 0;
-    this.redy= false;
+    this.ready= false;
     this.status = {
       systime: '00000',
       inTable: '000000',
@@ -280,26 +280,30 @@ export class Laurent {
     try {
       const newDate = new Date().getTime();
       const oldDate = this.status.sistemTime;
-      
+
       if (this.counter === 0) {
           this.counter++;
           const res = await this.getStatus();
           const status = JSON.parse(res);
           status.sistemTime = newDate;
           this.status = status;
-          this.redy = true;
+          this.ready = true;
+          this.counter = 0;
           this.counterResset(1000);
           return this.status;
       }
       this.counter++;
 
-      for (let i = 0; i < 200; i++) {
-        if (this.redy) {
-          await this.sleep(50);
-          return this.status;
-        }
-        await this.sleep(50);
-      }
+      await this.sleep(500);
+      return this.status;
+
+      // for (let i = 0; i < 200; i++) {
+      //   if (this.ready) {
+      //     await this.sleep(50);
+      //     return this.status;
+      //   }
+      //   await this.sleep(50);
+      // }
     } catch (error) {
         return error;
     }
@@ -308,7 +312,7 @@ export class Laurent {
   async counterResset (time = 1000) {
     await this.sleep(time);
     this.counter = 0;
-    this.redy = false;
+    this.ready = false;
 
     return this.counter;
   }
