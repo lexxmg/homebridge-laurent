@@ -21,7 +21,8 @@ export class LaurentOuts {
    * You should implement your own code to track the state of your accessory
    */
   private exampleStates = {
-    On: false
+    On: false,
+    push: false
   };
  
   constructor(
@@ -67,6 +68,7 @@ export class LaurentOuts {
    * These are sent when the user changes the state of an accessory, for example, turning on a Light bulb.
    */
   setOn(value: CharacteristicValue) {
+    this.exampleStates.push = true;
     // implement your own code to turn your device on/off
     if (this.outInv && this.mode !== 'onOff') {
       value = !value;
@@ -134,6 +136,14 @@ export class LaurentOuts {
    * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
    */
   async getOn(): Promise<CharacteristicValue> {
+    if (this.exampleStates.push) {
+      this.exampleStates.push = false;
+      await this.laurent.sleep(1000);
+      return this.exampleStates.On;
+    }
+
+    //await this.laurent.sleep(250);
+
     this.platform.log.debug('Счетчик -> ' + this.laurent.counter);
     if (this.mode === 'onOff') {
       await this.laurent.sleep(2000);

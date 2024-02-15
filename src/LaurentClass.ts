@@ -294,16 +294,12 @@ export class Laurent {
       }
       this.counter++;
 
-      await this.sleep(500);
-      return this.status;
-
-      // for (let i = 0; i < 200; i++) {
-      //   if (this.ready) {
-      //     await this.sleep(50);
-      //     return this.status;
-      //   }
-      //   await this.sleep(50);
-      // }
+      for (let i = 0; i < 200; i++) {
+        if (this.ready) {
+          return this.status;
+        }
+        await this.sleep(50);
+      }
     } catch (error) {
         return error;
     }
