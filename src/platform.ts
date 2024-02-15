@@ -5,6 +5,7 @@ import { PLATFORM_NAME, PLUGIN_NAME, URL_LAURENT } from './settings';
 import { Window } from './platformAccessory/window';
 import { Laurent } from './LaurentClass';
 import { LaurentOuts } from './platformAccessory/LaurentOuts';
+import { Temperature } from './platformAccessory/Temperature';
 
 const laurent = new Laurent(URL_LAURENT);
 
@@ -51,8 +52,8 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
         this.cteateAccessory(device, LaurentOuts);
       }
 
-      if (device.type === 'Window') {
-        this.cteateAccessory(device, Window);
+      if (device.outType === 'temp') {
+        this.cteateAccessory(device, Temperature);
       }
     }
   }

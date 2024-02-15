@@ -45,3 +45,17 @@
     Значение "mode" может быть:  "true" (вкыл. выкл.), "onOff" (включить на время), "tiggle"
     Значение "accessory" может быть: "Lightbulb" (лампочка), "Outlet" (розетка), "Switch" (выключатель)
 
+## Температура
+
+<pre>
+"accessories": [
+    {
+        "uniqueId": "fjkasg",
+        "displayName": "Температура",
+        "outType": "temp"
+    }
+]    
+</pre>
+
+    Значение "uniqueId": уникальный для проекта набор букв
+    Значение "displayName": имя отоброжаемое на кнопке
