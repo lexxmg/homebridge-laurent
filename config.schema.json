@@ -18,6 +18,11 @@
           {
             "type": "object",
             "properties": {
+              "ip": {
+                "title": "ip адрес Laurent",
+                "type": "string",
+                "default": "192.168.0.101"
+              },
               "uniqueId": {
                 "title": "Уникальный идентификатор",
                 "type": "string",

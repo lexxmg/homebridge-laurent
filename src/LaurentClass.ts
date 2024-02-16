@@ -6,8 +6,8 @@ export class Laurent {
   counter: number;
   ready: boolean;
  
-  constructor(url = 'http://192.168.0.101') {
-    this.url = url;
+  constructor(ip = '192.168.0.101') {
+    this.url = `http://${ip}`;
     this.counter = 0;
     this.ready= false;
     this.status = {

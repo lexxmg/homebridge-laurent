@@ -1,13 +1,13 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
-import { PLATFORM_NAME, PLUGIN_NAME, URL_LAURENT } from './settings';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 
 import { Window } from './platformAccessory/window';
 import { Laurent } from './LaurentClass';
 import { LaurentOuts } from './platformAccessory/LaurentOuts';
 import { Temperature } from './platformAccessory/Temperature';
 
-const laurent = new Laurent(URL_LAURENT);
+
 
 /**
  * HomebridgePlatform
@@ -21,6 +21,8 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
   // this is used to track restored cached accessories
   public readonly accessories: PlatformAccessory[] = [];
 
+  private laurent = {};
+
   constructor(
     public readonly log: Logger,
     public readonly config: PlatformConfig,
@@ -33,6 +35,12 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
      
       this.discoverDevices(this.config.accessories);
     });
+
+    this.config.accessories.forEach((item: any) => {
+      this.laurent[item.ip] = new Laurent(item.ip);
+    });
+
+    this.log.info('Объект laurent',this.laurent);
   }
 
   /**
@@ -65,7 +73,7 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
     if (existingAccessory) {
       this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
 
-      new obg(this, existingAccessory, laurent, device);
+      new obg(this, existingAccessory, this.laurent[device.ip], device);
     } else {
       this.log.info('Adding new accessory:', device.DisplayName);
 
@@ -73,7 +81,7 @@ export class LaurentHomebridgePlatform implements DynamicPlatformPlugin {
 
       accessory.context.device = device;
 
-      new obg(this, accessory, laurent, device);
+      new obg(this, accessory, this.laurent[device.ip], device);
 
       this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
     }

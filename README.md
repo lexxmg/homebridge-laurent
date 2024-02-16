@@ -4,6 +4,7 @@
 <pre>
     "accessories": [
         {
+            "ip": "192.168.0.101",
             "uniqueId": "HFDJ",
             "displayName": "выход-9",
             "outType": "out",
@@ -15,7 +16,7 @@
     ]
 </pre>
 
-
+    Значение "ip": ip адрес laurent (можно использовать несколько laurent с разными ip)
     Значение "uniqueId": уникальный для проекта набор букв
     Значение "displayName": имя отоброжаемое на кнопке
     Значение "out" может быть: числом от 1 до 12
@@ -27,6 +28,7 @@
 <pre>
     "accessories": [
         {
+            "ip": "192.168.0.101",
             "uniqueId": "fhsr",
             "displayName": "релле-1",
             "outType": "rel",
@@ -38,6 +40,7 @@
     ]
 </pre>
 
+    Значение "ip": ip адрес laurent (можно использовать несколько laurent с разными ip)
     Значение "uniqueId": уникальный для проекта набор букв
     Значение "displayName": имя отоброжаемое на кнопке
     Значение "out" может быть: числом от 1 до 4
@@ -48,14 +51,16 @@
 ## Температура
 
 <pre>
-"accessories": [
-    {
-        "uniqueId": "fjkasg",
-        "displayName": "Температура",
-        "outType": "temp"
-    }
-]    
+    "accessories": [
+        {
+            "ip": "192.168.0.101",
+            "uniqueId": "fjkasg",
+            "displayName": "Температура",
+            "outType": "temp"
+        }
+    ]    
 </pre>
 
+    Значение "ip": ip адрес laurent (можно использовать несколько laurent с разными ip)
     Значение "uniqueId": уникальный для проекта набор букв
     Значение "displayName": имя отоброжаемое на кнопке

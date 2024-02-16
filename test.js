@@ -1,55 +1,45 @@
 "use strict";
 
 const arr = [
-  {'ip': '192.168.0.104'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.102'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.103'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.102'},
-  {'ip': '192.168.0.104'},
-  {'ip': '192.168.0.104'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.110'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.107'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.103'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.102'},
-  {'ip': '192.168.0.104'},
-  {'ip': '192.168.0.104'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.102'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.103'},
-  {'ip': '192.168.0.101'},
-  {'ip': '192.168.0.102'},
-  {'ip': '192.168.0.104'}
+  {
+    "ip": "192.168.0.101",
+    "uniqueId": "fhsr",
+    "displayName": "релле-1",
+    "outType": "rel",
+    "out": 1,
+    "outInv": true,
+    "mode": "true",
+    "accessory": "Switch"
+  },
+  {
+    "ip": "192.168.0.102",
+    "uniqueId": "fhsr",
+    "displayName": "релле-1",
+    "outType": "rel",
+    "out": 1,
+    "outInv": true,
+    "mode": "true",
+    "accessory": "Switch"
+  },
+  {
+    "ip": "192.168.0.101",
+    "uniqueId": "fhsr",
+    "displayName": "релле-1",
+    "outType": "rel",
+    "out": 1,
+    "outInv": true,
+    "mode": "true",
+    "accessory": "Switch"
+  }
 ];
 
 
-const arrIpsort = [];
+const arrIpsort = {};
 
-arr.forEach(element => {
-  let flag = false;
-  if (arrIpsort.length === 0) {
-    arrIpsort.push(element);
-  }
-  for (let i = 0; i < arrIpsort.length; i++) {
-    if (arrIpsort[i].ip === element.ip) {
-      flag = false;
-      break;
-    } 
-    flag = true;
-  }
 
-  if (flag) {
-    arrIpsort.push(element);
-  }
+arr.forEach(item => {
+  arrIpsort[item.ip] = `laurent(${item.ip})`;
 });
 
-
-
-console.log(arrIpsort);
+console.log(arrIpsort['192.168.0.102']);
+//console.log( [...new Set(arr)] );
