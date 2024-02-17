@@ -53,6 +53,7 @@ export class Temperature {
   async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
     this.platform.log.debug('Triggered GET CurrentTemperature');
     const res = await this.laurent.getDelayedStatus();
+   
     return Math.round(res.temper);
   }  
 }

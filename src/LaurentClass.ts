@@ -1,4 +1,16 @@
+import { trace } from 'console';
 import got from 'got';
+
+const options = {
+	timeout: {
+    lookup: 100,
+		connect: 50,
+		secureConnect: 50,
+		socket: 1000,
+		send: 1000,
+		response: 1000
+	}
+};
 
 export class Laurent {
   url: string;
@@ -15,13 +27,13 @@ export class Laurent {
       inTable: '000000',
       outTable: '000000000000',
       releTable: '0000',
-      adc0: '0.000',
-      adc1: '0.000',
-      temper: '0.000',
-      count0: '00',
-      count1: '00',
-      count2: '00',
-      count3: '00',
+      adc0: '0',
+      adc1: '0',
+      temper: '-270',
+      count0: '0',
+      count1: '0',
+      count2: '0',
+      count3: '0',
       pwm: '0',
       sistemTime: 0
     }
@@ -83,8 +95,7 @@ export class Laurent {
         }
       }
     } catch (error) {
-      console.log('какая то ошибка ' + error);
-      console.log(response);
+      return false;
     }
   }
 
@@ -144,8 +155,7 @@ export class Laurent {
         }
       }
     } catch (error) {
-      console.log('какая то ошибка ' + error);
-      console.log(response);
+      return false;
     }
   }
 
@@ -162,8 +172,7 @@ export class Laurent {
       //this.getDelayedStatus();
       return await this.getPWM();
     } catch (error) {
-      console.log('какая то ошибка ' + error);
-      console.log(response);
+      return 0;
     }
   }
 
@@ -301,7 +310,7 @@ export class Laurent {
         await this.sleep(50);
       }
     } catch (error) {
-        return error;
+        return this.status;
     }
   }
 
@@ -321,36 +330,40 @@ export class Laurent {
    * getStatus().then(res => console.log(JSON.parse(res).releTable));
    */
   async getStatus() {
-    const response: any = await got(`${this.url}/status.xml`).text();
-    const systime = /<systime0>([^<]+)/.exec(response);
-    const inTable = /<in_table0>([^<]+)/.exec(response);
-    const outTable = /<out_table0>([^<]+)/.exec(response);
-    const releTable = /<rele_table0>([^<]+)/.exec(response);
-    const adc0 = /<adc0>([^<]+)/.exec(response); 
-    const adc1 = /<adc1>([^<]+)/.exec(response);
-    const temper = /<temper0>([^<]+)/.exec(response);
-    const count0 = /<count0>([^<]+)/.exec(response);
-    const count1 = /<count1>([^<]+)/.exec(response);
-    const count2 = /<count2>([^<]+)/.exec(response);
-    const count3 = /<count3>([^<]+)/.exec(response);
-    const pwm = /<pwm0>([^<]+)/.exec(response);
+    try {
+      const response: any = await got(`${this.url}/status.xml`, options).text();
+      const systime = /<systime0>([^<]+)/.exec(response);
+      const inTable = /<in_table0>([^<]+)/.exec(response);
+      const outTable = /<out_table0>([^<]+)/.exec(response);
+      const releTable = /<rele_table0>([^<]+)/.exec(response);
+      const adc0 = /<adc0>([^<]+)/.exec(response); 
+      const adc1 = /<adc1>([^<]+)/.exec(response);
+      const temper = /<temper0>([^<]+)/.exec(response);
+      const count0 = /<count0>([^<]+)/.exec(response);
+      const count1 = /<count1>([^<]+)/.exec(response);
+      const count2 = /<count2>([^<]+)/.exec(response);
+      const count3 = /<count3>([^<]+)/.exec(response);
+      const pwm = /<pwm0>([^<]+)/.exec(response);
 
-    return JSON.stringify(
-      { 
-        systime: systime ? systime[1] : '', 
-        inTable: inTable ? inTable[1] : '',
-        outTable: outTable ? outTable[1] : '',
-        releTable: releTable ? releTable[1] : '',
-        adc0: adc0 ? adc0[1] : '', 
-        adc1: adc1 ? adc1[1] : '',
-        temper: temper ? temper[1] : '',
-        count0: count0 ? count0[1] : '',
-        count1: count1 ? count1[1] : '',
-        count2: count2 ? count2[1] : '',
-        count3: count3 ? count3[1] : '',
-        pwm: pwm ? pwm[1] : '',
-      }
-    );
+      return JSON.stringify(
+        { 
+          systime: systime ? systime[1] : '', 
+          inTable: inTable ? inTable[1] : '',
+          outTable: outTable ? outTable[1] : '',
+          releTable: releTable ? releTable[1] : '',
+          adc0: adc0 ? adc0[1] : '', 
+          adc1: adc1 ? adc1[1] : '',
+          temper: temper ? temper[1] : '',
+          count0: count0 ? count0[1] : '',
+          count1: count1 ? count1[1] : '',
+          count2: count2 ? count2[1] : '',
+          count3: count3 ? count3[1] : '',
+          pwm: pwm ? pwm[1] : '',
+        }
+      );
+    } catch (error) {
+      return JSON.stringify(this.status);
+    }
   }
 
   async sleep(time: number) {
