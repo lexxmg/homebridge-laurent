@@ -53,7 +53,7 @@ export class LaurentOuts {
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
     this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.displayName);
-
+    
     // each service must implement at-minimum the "required characteristics" for the given service type
     // see https://developers.homebridge.io/#/service/Lightbulb
 
@@ -61,13 +61,16 @@ export class LaurentOuts {
     this.service.getCharacteristic(this.platform.Characteristic.On)
       .onSet(this.setOn.bind(this))                // SET - bind to the `setOn` method below
       .onGet(this.getOn.bind(this));               // GET - bind to the `getOn` method below
+
   }
+  
 
   /**
    * Handle "SET" requests from HomeKit
    * These are sent when the user changes the state of an accessory, for example, turning on a Light bulb.
    */
   setOn(value: CharacteristicValue) {
+    this.platform.log.debug('установка значения выхода-> ', `${this.outType} - ${this.out} ${value}`);
     this.exampleStates.push = true;
     // implement your own code to turn your device on/off
     if (this.outInv && this.mode !== 'onOff') {
@@ -136,6 +139,9 @@ export class LaurentOuts {
    * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
    */
   async getOn(): Promise<CharacteristicValue> {
+    this.platform.log.debug('опрос выхода-> ', `${this.outType} - ${this.out}`);
+    //this.service.updateCharacteristic(this.platform.Characteristic.On, new Error('A placeholder error object'));
+    
     if (this.exampleStates.push) {
       this.exampleStates.push = false;
       await this.laurent.sleep(1000);
