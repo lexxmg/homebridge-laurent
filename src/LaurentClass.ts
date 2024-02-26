@@ -6,9 +6,9 @@ const options = {
     lookup: 100,
 		connect: 50,
 		secureConnect: 50,
-		socket: 1000,
-		send: 1000,
-		response: 1000
+		socket: 500,
+		send: 500,
+		response: 500
 	}
 };
 

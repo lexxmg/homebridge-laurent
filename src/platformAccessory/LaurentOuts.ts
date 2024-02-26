@@ -139,42 +139,44 @@ export class LaurentOuts {
    * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
    */
   async getOn(): Promise<CharacteristicValue> {
-    this.platform.log.debug('опрос выхода-> ', `${this.outType} - ${this.out}`);
-    //this.service.updateCharacteristic(this.platform.Characteristic.On, new Error('A placeholder error object'));
-    
     if (this.exampleStates.push) {
       this.exampleStates.push = false;
       await this.laurent.sleep(1000);
+
       return this.exampleStates.On;
     }
-
-    //await this.laurent.sleep(250);
 
     this.platform.log.debug('Счетчик -> ' + this.laurent.counter);
     if (this.mode === 'onOff') {
       await this.laurent.sleep(2000);
-      return await this.getStat(this.out, this.outType, false);
+      const res = await this.getStat(this.out, this.outType, false);
+
+      if (+res[1] === -270) throw new Error('Нет ответа');
+      return res[0];
     }
 
-    return await this.getStat(this.out, this.outType, this.outInv);
+    const res = await this.getStat(this.out, this.outType, this.outInv);
+
+    if (+res[1] === -270) throw false //new Error('Нет ответа');
+    return res[0];
   }
 
   async getStat(out = 1, type = 'out', rev = false): Promise<any> {
     const getOut = async (out: number, rev: boolean) => {
       const res = await this.laurent.getDelayedStatus();
       if (rev) {
-        return +res.outTable[out - 1] ? false : true;
+        return [+res.outTable[out - 1] ? false : true, res.temper];
       } else {
-        return +res.outTable[out - 1] ? true : false;
+        return [+res.outTable[out - 1] ? true : false, res.temper];
       }
     }
 
     const getRel = async (out: number, rev: boolean) => {
       const res = await this.laurent.getDelayedStatus();
       if (rev) {
-        return +res.releTable[out - 1] ? false : true;
+        return [+res.releTable[out - 1] ? false : true, res.temper];
       } else {
-        return +res.releTable[out - 1] ? true : false;
+        return [+res.releTable[out - 1] ? true : false, res.temper];
       }
     }
 

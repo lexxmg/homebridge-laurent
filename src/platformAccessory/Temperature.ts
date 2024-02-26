@@ -54,6 +54,7 @@ export class Temperature {
     this.platform.log.debug('Triggered GET CurrentTemperature');
     const res = await this.laurent.getDelayedStatus();
    
+    if (+res[1] === -270) throw new Error('Нет ответа');
     return Math.round(res.temper);
   }  
 }
