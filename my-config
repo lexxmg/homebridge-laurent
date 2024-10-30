@@ -1,0 +1,92 @@
+"accessories" [
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "HFDJ",
+      "displayName": "OUT-9",
+      "outType": "out",
+      "out": 9,
+      "outInv": false,
+      "mode": "true",
+      "accessory": "Lightbulb"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "HFwrJ",
+      "displayName": "OUT-1",
+      "outType": "out",
+      "out": 1,
+      "outInv": false,
+      "mode": "true",
+      "accessory": "Lightbulb"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "HFeyDJ",
+      "displayName": "OUT-6",
+      "outType": "out",
+      "out": 6,
+      "outInv": false,
+      "mode": "true",
+      "accessory": "Lightbulb"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "HFDfgsJ",
+      "displayName": "OUT-7",
+      "outType": "out",
+      "out": 7,
+      "outInv": false,
+      "mode": "true",
+      "accessory": "Lightbulb"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "HFDcmfJ",
+      "displayName": "OUT-4",
+      "outType": "out",
+      "out": 4,
+      "outInv": false,
+      "mode": "true",
+      "accessory": "Lightbulb"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "HFwqfJ",
+      "displayName": "OUT-8",
+      "outType": "out",
+      "out": 8,
+      "outInv": false,
+      "mode": "true",
+      "accessory": "Outlet"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "oryfJ",
+      "displayName": "OUT-3",
+      "outType": "out",
+      "out": 3,
+      "outInv": false,
+      "mode": "true",
+      "accessory": "Outlet"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "orypyow",
+      "displayName": "OUT-12 закрыть",
+      "outType": "out",
+      "out": 12,
+      "outInv": false,
+      "mode": "onOff",
+      "accessory": "Switch"
+  },
+  {
+      "ip": "192.168.0.101",
+      "uniqueId": "oruweow",
+      "displayName": "OUT-11 открыть",
+      "outType": "out",
+      "out": 11,
+      "outInv": false,
+      "mode": "onOff",
+      "accessory": "Switch"
+  }
+]
