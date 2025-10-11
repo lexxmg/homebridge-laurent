@@ -12,9 +12,25 @@ const options = {
 	}
 };
 
+type Stat = {
+  systime: string,
+  inTable: string,
+  outTable: string,
+  releTable: string,
+  adc0: string,
+  adc1: string,
+  temper: string,
+  count0: string,
+  count1: string,
+  count2: string,
+  count3: string,
+  pwm: string,
+  sistemTime: number
+};
+
 export class Laurent {
   url: string;
-  status: any;
+  status: Stat
   counter: number;
   ready: boolean;
  
